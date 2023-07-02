@@ -11,12 +11,13 @@ def traitement(image, prompt):
     image.save(image_bytes, format='JPEG')
     image_bytes.seek(0)
     model = replicate.Client(api_token = st.secrets["REPLICATE_API_KEY"])
-    print("Before model.run")
-    output = model.run(
-        "daanelson/minigpt-4:b96a2f33cc8e4b0aa23eacfce731b9c41a7d9466d9ed4e167375587b54db9423",
-        input={"image": image_bytes, "prompt":prompt},
-    )
-    print(output)
+    try:
+        output = model.run(
+            "daanelson/minigpt-4:b96a2f33cc8e4b0aa23eacfce731b9c41a7d9466d9ed4e167375587b54db9423",
+            input={"image": image_bytes, "prompt":prompt},
+        )
+    except Exception as error:
+        print(error)
     return output
 
 st.title("🩻 Delos Image Describer")
